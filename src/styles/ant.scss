@@ -1,0 +1,180 @@
+@import './variables.scss';
+
+.ant-select-dropdown-menu-item {
+  font-size: $font-size !important;
+}
+
+.ant-menu-submenu-selected,
+.ant-menu-item-selected {
+  color: $color-primary;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #fff7e6;
+}
+
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover {
+  color: $color-primary;
+}
+
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  border-color: $color-primary;
+}
+
+.ant-menu-submenu-vertical
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::after,
+.ant-menu-submenu-vertical-left
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::after,
+.ant-menu-submenu-vertical-right
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::after,
+.ant-menu-submenu-inline
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::after,
+.ant-menu-submenu-vertical
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::before,
+.ant-menu-submenu-vertical-left
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::before,
+.ant-menu-submenu-vertical-right
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::before,
+.ant-menu-submenu-inline
+  > .ant-menu-submenu-title:hover
+  .ant-menu-submenu-arrow::before {
+  background: linear-gradient(to right, $color-primary, $color-primary);
+}
+
+.ant-input {
+  width: 240px;
+  max-width: 100%;
+  height: fit-content;
+
+  &:hover {
+    border-color: $color-primary;
+  }
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: none;
+  }
+}
+
+.ant-btn-primary {
+  background-color: $color-primary;
+  border-color: $color-primary;
+  text-shadow: none;
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: $color-primary-hover;
+    border-color: $color-primary-hover;
+  }
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: $color-primary;
+}
+
+.ant-checkbox-checked {
+  .ant-checkbox-inner {
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
+
+  &::after {
+    border-color: $color-primary;
+  }
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: $color-primary;
+}
+
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:focus {
+  border-color: $color-primary;
+  border-right-width: 1px !important;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+}
+
+.menus .ant-dropdown-menu-item {
+  a {
+    min-width: 160px;
+
+    .t-icon {
+      font-size: $font-size;
+    }
+  }
+
+  &:hover {
+    background-color: #ffffff;
+
+    a {
+      color: $color-primary;
+    }
+  }
+}
+
+.ant-btn:hover,
+.ant-btn:focus {
+  color: $color-primary;
+  border-color: $color-primary;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  color: #ffffff;
+}
+
+.ant-breadcrumb a:hover,
+.ant-menu-item > a:hover {
+  color: $color-primary;
+}
+
+.ant-switch {
+  margin-top: 4px;
+}
+
+.ant-slider .ant-slider-rail {
+  background-color: #e1e1e1;
+}
+
+.ant-slider {
+  min-width: 160px;
+  margin: 10px 6px;
+}
+.ant-rate .anticon {
+  vertical-align: -1px;
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  border-color: $color-primary;
+}
+
+.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  font-weight: 400;
+  background-color: #ffffff;
+}

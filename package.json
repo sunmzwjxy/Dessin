@@ -2,13 +2,33 @@
   "name": "dessin",
   "version": "0.1.0",
   "private": true,
+  "keywords": [
+    "vue",
+    "topology",
+    "activity",
+    "canvas"
+  ],
+  "homepage": "",
+  "license": "MIT",
+  "author": "Jimmy Sun",
+  "main": "src/main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "npm run serve"
   },
   "dependencies": {
+    "@topology/activity-diagram": "^0.3.0",
+    "@topology/chart-diagram": "^0.5.1",
+    "@topology/class-diagram": "^0.3.0",
+    "@topology/core": "^0.5.23",
+    "@topology/flow-diagram": "^0.3.0",
+    "@topology/layout": "^0.3.0",
+    "@topology/sequence-diagram": "^0.3.0",
     "core-js": "^3.6.5",
+    "element-ui": "^2.15.3",
+    "file-saver": "^2.0.5",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
@@ -27,6 +47,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.4",
+    "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.11"
   }
 }

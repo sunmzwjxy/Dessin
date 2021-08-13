@@ -1,23 +1,30 @@
 <template>
   <div class="page-body flex">
     <div class="tools">
-      <work-tools />
+      <worktools />
     </div>
     <div class="body">
       <div id="topology"></div>
     </div>
     <div class="props">
-      <a>dessin</a>
+      <component :is="componentName"></component>
     </div>
   </div>
 </template>
 
 <script>
-import { Topology } from '@topology/core'
+import { Topology, Node, Line } from '@topology/core'
+
 import * as FileSaver from 'file-saver'
 import { canvasRegister } from '../services/canvas'
 
 import worktools from '@/components/tools'
+import filePanel from '@/components/filePanel'
+import nodePanel from '@/components/nodePanel'
+import linePanel from '@/components/linePanel'
+import uploadPic from '@/components/uploadPic'
+
+import C2S from '../services/canvas2svg'
 
 export default {
   name: 'Home',
@@ -37,11 +44,16 @@ export default {
         left: null,
         top: null,
         bottom: null
-      }
+      },
+      componentName: 'filePanel'
     }
   },
   components: {
-    'work-tools': worktools
+    worktools: worktools,
+    filePanel: filePanel,
+    nodePanel: nodePanel,
+    uploadPic: uploadPic,
+    linePanel: linePanel
   },
   created() {
     canvasRegister()
@@ -72,11 +84,20 @@ export default {
               multi: false,
               locked: data.locked
             }
+            this.componentName = 'nodePanel'
+            break
+          case 'line':
+          case 'addLine':
+            this.componentName = 'linePanel'
             break
           case 'scale':
-          case 'resize':
           case 'locked':
-            this.commitState()
+            this.$store.commit(`canvas/${event}`, this.canvas.data[event])
+            break
+          case 'space':
+            this.componentName = 'filePanel'
+            break
+          default:
             break
         }
       }, 0)
@@ -131,10 +152,27 @@ export default {
       this.canvas.saveAsImage('dessin.png')
     },
     handle_SaveSVG(data) {
-      this.$notify.error({
-        title: '错误',
-        message: '此功能还未实现！'
-      })
+      const ctx = new C2S(this.canvas.canvas.width + 200, this.canvas.canvas.height + 200)
+      for (const item of this.canvas.data.pens) {
+        let pen = null
+        if (item.type) {
+          pen = new Line(item)
+        } else {
+          pen = new Node(item)
+          pen.animateFrames = []
+        }
+        pen.render(ctx)
+      }
+      const mySerializedSVG = ctx.getSerializedSvg()
+      const urlObject = window.URL || window
+      const exportblob = new Blob([mySerializedSVG])
+      const url = urlObject.createObjectURL(exportblob)
+      const a = document.createElement('a')
+      a.setAttribute('download', 'Dessin.svg')
+      a.setAttribute('href', url)
+      const evt = document.createEvent('MouseEvents')
+      evt.initEvent('click', true, true)
+      a.dispatchEvent(evt)
     },
     handle_exportHTML(data) {
       this.$notify.error({
@@ -155,47 +193,27 @@ export default {
       this.canvas.copy()
     },
     handle_Paste(data) {
-      this.canvas.parse()
+      this.canvas.paste()
     },
     handle_state(data) {
-      this.canvas.data[data.key] = data.value
-      this.commitState()
-    },
-    handle_Reset(data) {
-      this.canvas.scaleTo(1)
-    },
-    handle_Scale(data) {
-      this.canvas.scaleTo(this.canvas.data.scale + data)
-      this.$store.commit('canvas/data', {
-        scale: this.canvas.data.scale || 1
-      })
-    },
-    handle_Fitview(data) {
-      this.canvas.fitView()
-    },
-    commitState() {
-      // lineWidth有问题
-      if (this.canvas && this.canvas.data) {
-        // lineWidth有问题,初始化lineWidth未定义
-        if (this.canvas.data.lineWidth) {
-          this.$store.commit('canvas/data', {
-            scale: this.canvas.data.scale || 1,
-            lineName: this.canvas.data.lineName,
-            lineWidth: this.canvas.data.lineWidth,
-            fromArrow: this.canvas.data.fromArrow,
-            toArrow: this.canvas.data.toArrow,
-            locked: this.canvas.data.locked
-          })
-        } else {
-          this.$store.commit('canvas/data', {
-            scale: this.canvas.data.scale || 1,
-            lineName: this.canvas.data.lineName,
-            lineWidth: 1,
-            fromArrow: this.canvas.data.fromArrow,
-            toArrow: this.canvas.data.toArrow,
-            locked: this.canvas.data.locked
-          })
-        }
+      switch (data.key) {
+        case 'autoAnchor':
+          this.canvas.options.autoAnchor = data.value
+          this.$store.commit(`canvas/${data.key}`, data.value)
+          break
+        case 'scale':
+          this.canvas.scaleTo(this.canvas.data.scale + data.value)
+          break
+        case 'reset':
+          this.canvas.scaleTo(data.value)
+          break
+        case 'fitview':
+          this.canvas.fitView()
+          break
+        default:
+          // locked lineName fromArrow toArrow lineWidth
+          this.canvas.data[data.key] = data.value
+          this.$store.commit(`canvas/${data.key}`, data.value)
       }
     }
   },
@@ -228,7 +246,10 @@ export default {
 
   & > .props {
     width: 240px;
+    height: 100%;
     border-left: 1px solid $color-border;
+    position: relative;
+    overflow: hidden;
   }
 }
 

@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style scoped>
-#app {
+/* #app {
   min-width: 1366px;
-}
+} */
 </style>>

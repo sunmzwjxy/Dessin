@@ -105,6 +105,7 @@ export default {
             break
           case 'opened':
             // update file panel after opened
+            this.$store.commit('canvas/init', this.canvas.data)
             break
           default:
             break
@@ -114,6 +115,7 @@ export default {
     // New canvas
     handle_New(data) {
       this.canvas.open()
+      this.$store.commit('canvas/init', this.canvas.data)
     },
     // open native data
     handle_Open(data) {

@@ -54,27 +54,27 @@ const canvas = {
       state.filePops[data.key] = data.value
     },
     init(state, data) {
-      if (data === null) {
-        // header props
-        state.data.scale = 1
-        state.data.lineName = 'curve'
-        state.data.lineWidth = 1
-        state.data.fromArrow = ''
-        state.data.toArrow = 'triangleSolid'
-        state.data.locked = 0
-        state.data.autoAnchor = false
-
-        // file props
-        state.filePops.name = '' // 文件名
-        state.filePops.folder = '' // 文件夹
-        state.filePops.classify = '' // 分类
-        state.filePops.bkColor = '#000'
-        state.filePops.bkPictur = ''
-        state.filePops.grid = false
-        state.filePops.gridColor = '#000'
-        state.filePops.gridSize = 10
-        state.filePops.rule = false
-        state.filePops.ruleColor = '#000'
+      // header Props
+      for (const key in state.data) {
+        if (data[key] !== undefined) {
+          state.data[key] = data[key]
+        }
+      }
+      // file panel
+      for (const key in state.filePops) {
+        if (data[key] !== undefined) {
+          state.filePops[key] = data[key]
+        } else {
+          switch (key) {
+            case 'grid':
+            case 'rule':
+              state.filePops[key] = false
+              break
+            default:
+              state.filePops[key] = ''
+              break
+          }
+        }
       }
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="file-panel">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="图纸" name="first">
         <div class="file-setting">
           <div>
@@ -8,22 +8,22 @@
               <!-- 文件属性 -->
               <div class="flex-group">
                 <div>文件名</div>
-                <div class="full-text"><el-input size="mini" placeholder="文件名"></el-input></div>
+                <div class="full-text"><el-input size="mini" placeholder="文件名" v-model="name"></el-input></div>
               </div>
               <div class="flex-group">
                 <div>文件夹</div>
-                <div class="full-text"><el-input size="mini" placeholder="文件夹"></el-input></div>
+                <div class="full-text"><el-input size="mini" placeholder="文件夹" v-model="folder"></el-input></div>
               </div>
               <div class="flex-group">
                 <div>分类</div>
-                <div class="full-text"><el-input size="mini" placeholder="分类"></el-input></div>
+                <div class="full-text"><el-input size="mini" placeholder="分类" v-model="classify"></el-input></div>
               </div>
             </div>
             <div class="file-group">
               <!-- 画布属性 -->
               <div class="flex-group">
                 <div>背景颜色</div>
-                <el-color-picker v-model="bgcolor" size="mini"></el-color-picker>
+                <el-color-picker v-model="bkColor" size="mini"></el-color-picker>
               </div>
               <div class="flex-group">
                 <div>背景图片</div>
@@ -31,26 +31,26 @@
               </div>
               <div class="flex-group">
                 <div>背景网格</div>
-                <el-switch v-model="bgcheck"></el-switch>
+                <el-switch v-model="grid"></el-switch>
               </div>
               <div class="flex-group">
                 <div>网格颜色</div>
-                <el-color-picker v-model="gridcolor" size="mini"></el-color-picker>
+                <el-color-picker v-model="gridColor" size="mini"></el-color-picker>
               </div>
               <div class="flex-group">
                 <div>网格大小</div>
-                <el-input-number v-model="num" controls-position="right" :min="1" :max="10" size="small"></el-input-number>
+                <el-input-number v-model="gridSize" controls-position="right" :min="1" :max="50" size="small"></el-input-number>
               </div>
             </div>
             <div class="file-group">
               <!-- 标尺 -->
               <div class="flex-group">
                 <div>标尺</div>
-                <el-switch v-model="rulecheck"> </el-switch>
+                <el-switch v-model="rule"> </el-switch>
               </div>
               <div class="flex-group">
                 <div>标尺颜色</div>
-                <el-color-picker v-model="rulecolor" size="mini"></el-color-picker>
+                <el-color-picker v-model="ruleColor" size="mini"></el-color-picker>
               </div>
               <br /><br />
               <div>小提示</div>
@@ -70,33 +70,171 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="配置" name="second">配置</el-tab-pane>
+      <el-tab-pane label="通信" name="second">
+        <div class="file-setting">
+          <div>
+            <div class="file-group">
+              <div class="flex-group">
+                <div>mqTT</div>
+                <div class="full-text"><el-input size="mini" placeholder="mqTT"></el-input></div>
+              </div>
+              <div class="flex-group">
+                <div>key</div>
+                <div class="full-text"><el-input size="mini" placeholder="mqTT key"></el-input></div>
+              </div>
+              <div class="flex-group">
+                <el-button>连接</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
       <el-tab-pane label="角色" name="third">角色管理</el-tab-pane>
-      <el-tab-pane label="定时" name="fourth">定时任务补偿</el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'filePanel',
   data() {
     return {
-      activeName: 'first',
-      bgcolor: '#000',
-      bgcheck: false,
-      gridcolor: '#000',
-      rulecolor: '#000',
-      rulecheck: false,
-      num: 1
+      activeName: 'first'
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    }
+    ...mapMutations('menu', ['emit'])
   },
-  components: {}
+  computed: {
+    name: {
+      get() {
+        return this.$store.state.canvas.filePops.name
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'name',
+            value: newValue
+          }
+        })
+      }
+    },
+    folder: {
+      get() {
+        return this.$store.state.canvas.filePops.folder
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'folder',
+            value: newValue
+          }
+        })
+      }
+    },
+    classify: {
+      get() {
+        return this.$store.state.canvas.filePops.classify
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'classify',
+            value: newValue
+          }
+        })
+      }
+    },
+    bkColor: {
+      get() {
+        return this.$store.state.canvas.filePops.bkColor
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'bkColor',
+            value: newValue
+          }
+        })
+      }
+    },
+    grid: {
+      get() {
+        return this.$store.state.canvas.filePops.grid
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'grid',
+            value: newValue
+          }
+        })
+      }
+    },
+    gridColor: {
+      get() {
+        return this.$store.state.canvas.filePops.gridColor
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'gridColor',
+            value: newValue
+          }
+        })
+      }
+    },
+    gridSize: {
+      get() {
+        return this.$store.state.canvas.filePops.gridSize
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'gridSize',
+            value: newValue
+          }
+        })
+      }
+    },
+    rule: {
+      get() {
+        return this.$store.state.canvas.filePops.rule
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'rule',
+            value: newValue
+          }
+        })
+      }
+    },
+    ruleColor: {
+      get() {
+        return this.$store.state.canvas.filePops.ruleColor
+      },
+      set(newValue) {
+        this.emit({
+          name: 'filePanel',
+          data: {
+            key: 'ruleColor',
+            value: newValue
+          }
+        })
+      }
+    }
+  }
 }
 </script>
 

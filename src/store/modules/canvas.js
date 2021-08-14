@@ -13,20 +13,16 @@ const canvas = {
     },
     // file pops
     filePops: {
-      canvasfile: {
-        name: '', // 文件名
-        folder: '', // 文件夹
-        classify: '' // 分类
-      },
-      canvalColor: {
-        bkColor: '#000',
-        bkPictur: '',
-        grid: false,
-        gridColor: '#000',
-        gridSize: '',
-        rule: false,
-        ruleColor: '#000'
-      }
+      name: '', // 文件名
+      folder: '', // 文件夹
+      classify: '', // 分类
+      bkColor: '#000',
+      bkPictur: '',
+      grid: false,
+      gridColor: '#000',
+      gridSize: 10,
+      rule: false,
+      ruleColor: '#000'
     }
   },
   mutations: {
@@ -51,7 +47,36 @@ const canvas = {
     autoAnchor(state, value) {
       state.data.autoAnchor = value
     },
-    resize(state, value) {}
+    resize(state, value) {},
+    // lazy
+    canvasfile(state, data) {
+      // 动态获取变量名并动态赋值
+      state.filePops[data.key] = data.value
+    },
+    init(state, data) {
+      if (data === null) {
+        // header props
+        state.data.scale = 1
+        state.data.lineName = 'curve'
+        state.data.lineWidth = 1
+        state.data.fromArrow = ''
+        state.data.toArrow = 'triangleSolid'
+        state.data.locked = 0
+        state.data.autoAnchor = false
+
+        // file props
+        state.filePops.name = '' // 文件名
+        state.filePops.folder = '' // 文件夹
+        state.filePops.classify = '' // 分类
+        state.filePops.bkColor = '#000'
+        state.filePops.bkPictur = ''
+        state.filePops.grid = false
+        state.filePops.gridColor = '#000'
+        state.filePops.gridSize = 10
+        state.filePops.rule = false
+        state.filePops.ruleColor = '#000'
+      }
+    }
   },
   actions: {},
   getters: {},

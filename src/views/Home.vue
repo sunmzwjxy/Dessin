@@ -37,7 +37,6 @@ export default {
         line: null,
         nodes: null,
         multi: false,
-        // expand: false,
         locked: false
       },
       contextmenu: {
@@ -63,13 +62,20 @@ export default {
     this.canvas = new Topology('topology', this.canvasOptions)
   },
   watch: {
-    // 监听$store.state.menu.data
+    // monitor $store.state.menu.data
     '$store.state.menu.data'(curData) {
       if (this['handle_' + curData.name]) {
         // call menu function
         this['handle_' + curData.name](curData.data)
       }
     }
+    // deep monitor $store.state.canvas.filePops.canvasfile
+    // '$store.state.canvas.filePops': {
+    //   deep: true,
+    //   handler(curData) {
+    //     console.log(curData)
+    //   }
+    // }
   },
   methods: {
     onMessage(event, data) {
@@ -96,6 +102,9 @@ export default {
             break
           case 'space':
             this.componentName = 'filePanel'
+            break
+          case 'opened':
+            // update file panel after opened
             break
           default:
             break
@@ -145,10 +154,12 @@ export default {
         new Blob([JSON.stringify(this.canvas.data)], {
           type: 'text/plain;charset=utf-8'
         }),
+        // need to update file name
         'dessin.json'
       )
     },
     handle_SavePNG(data) {
+      // need to update file name
       this.canvas.saveAsImage('dessin.png')
     },
     handle_SaveSVG(data) {
@@ -168,6 +179,7 @@ export default {
       const exportblob = new Blob([mySerializedSVG])
       const url = urlObject.createObjectURL(exportblob)
       const a = document.createElement('a')
+      // need to update file name
       a.setAttribute('download', 'Dessin.svg')
       a.setAttribute('href', url)
       const evt = document.createEvent('MouseEvents')
@@ -176,8 +188,8 @@ export default {
     },
     handle_exportHTML(data) {
       this.$notify.error({
-        title: '错误',
-        message: '此功能还未实现！'
+        title: 'Error',
+        message: 'This functional is not implemented!'
       })
     },
     handle_Undo(data) {
@@ -195,6 +207,7 @@ export default {
     handle_Paste(data) {
       this.canvas.paste()
     },
+    // update header state
     handle_state(data) {
       switch (data.key) {
         case 'autoAnchor':
@@ -215,6 +228,12 @@ export default {
           this.canvas.data[data.key] = data.value
           this.$store.commit(`canvas/${data.key}`, data.value)
       }
+    },
+    // update file Panel Props
+    handle_filePanel(data) {
+      this.canvas.data[data.key] = data.value
+      this.$store.commit('canvas/canvasfile', data)
+      this.canvas.willRender()
     }
   },
   destroyed() {

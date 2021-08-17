@@ -90,6 +90,7 @@ export default {
               multi: false,
               locked: data.locked
             }
+            this.$store.commit('node/setNode', data)
             this.componentName = 'nodePanel'
             break
           case 'line':
@@ -146,8 +147,8 @@ export default {
     // save json to database
     handle_Save(data) {
       this.$notify.error({
-        title: '错误',
-        message: '此功能还未实现！'
+        title: 'Error',
+        message: 'This functional is not implemented!'
       })
     },
     // save json to native

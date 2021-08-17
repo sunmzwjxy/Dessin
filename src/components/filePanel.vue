@@ -2,94 +2,92 @@
   <div class="file-panel">
     <el-tabs v-model="activeName">
       <el-tab-pane label="图纸" name="first">
-        <div class="file-setting">
-          <div>
-            <div class="file-group">
-              <!-- 文件属性 -->
-              <div class="flex-group">
-                <div>文件名</div>
-                <div class="full-text"><el-input size="mini" placeholder="文件名" v-model="name"></el-input></div>
-              </div>
-              <div class="flex-group">
-                <div>文件夹</div>
-                <div class="full-text"><el-input size="mini" placeholder="文件夹" v-model="folder"></el-input></div>
-              </div>
-              <div class="flex-group">
-                <div>分类</div>
-                <div class="full-text"><el-input size="mini" placeholder="分类" v-model="classify"></el-input></div>
-              </div>
+        <el-collapse v-model="activeNames" style="padding-left:10px;padding-right:10px;">
+          <el-collapse-item title="文件" name="1">
+            <div class="flex-group">
+              <div>文件名</div>
+              <el-input size="mini" placeholder="文件名" v-model="name"></el-input>
             </div>
-            <div class="file-group">
-              <!-- 画布属性 -->
-              <div class="flex-group">
-                <div>背景颜色</div>
-                <el-color-picker v-model="bkColor" size="mini"></el-color-picker>
-              </div>
-              <div class="flex-group">
-                <div>背景图片</div>
-                <el-button icon="el-icon-edit" size="mini"></el-button>
-              </div>
-              <div class="flex-group">
-                <div>背景网格</div>
-                <el-switch v-model="grid"></el-switch>
-              </div>
-              <div class="flex-group">
-                <div>网格颜色</div>
-                <el-color-picker v-model="gridColor" size="mini"></el-color-picker>
-              </div>
-              <div class="flex-group">
-                <div>网格大小</div>
-                <el-input-number v-model="gridSize" controls-position="right" :min="1" :max="50" size="small"></el-input-number>
-              </div>
+            <div class="flex-group">
+              <div>文件夹</div>
+              <el-input size="mini" placeholder="文件夹" v-model="folder"></el-input>
             </div>
-            <div class="file-group">
-              <!-- 标尺 -->
-              <div class="flex-group">
-                <div>标尺</div>
-                <el-switch v-model="rule"> </el-switch>
-              </div>
-              <div class="flex-group">
-                <div>标尺颜色</div>
-                <el-color-picker v-model="ruleColor" size="mini"></el-color-picker>
-              </div>
-              <br /><br />
-              <div>小提示</div>
+            <div class="flex-group">
+              <div>分类</div>
+              <el-input size="mini" placeholder="分类" v-model="classify"></el-input>
             </div>
-            <div class="file-group">
-              <!-- Tips -->
-              <ul style="fontSize:small">
-                <li>Ctrl/Command + Alt + Shift + 鼠标单击：自定义锚点</li>
-                <li>Ctrl/Command/Space + 鼠标拖拽空白：移动整个画布</li>
-                <li>Alt/Shift + 鼠标拖拽节点：独立拖拽（子）节点</li>
-                <li>Ctrl/Command + 鼠标点击：多选</li>
-                <li>← ↑ → ↓ ：移动5个像素</li>
-                <li>Ctrl + ← ↑ → ↓ ：移动1个像素</li>
-                <br /><br /><br />
-              </ul>
+          </el-collapse-item>
+          <el-collapse-item title="背景" name="2">
+            <div class="flex-group">
+              <div>背景颜色</div>
+              <label>{{ bkColor }}</label>
+              <el-color-picker v-model="bkColor" size="mini"></el-color-picker>
             </div>
-          </div>
-        </div>
+            <div class="flex-group">
+              <div>背景图片</div>
+              <el-button icon="el-icon-edit" size="mini"></el-button>
+            </div>
+            <div class="flex-group">
+              <div>背景网格</div>
+              <el-switch v-model="grid"></el-switch>
+            </div>
+            <div class="flex-group">
+              <div>网格颜色</div>
+              <label>{{ gridColor }}</label>
+              <el-color-picker v-model="gridColor" size="mini"></el-color-picker>
+            </div>
+            <div class="flex-group">
+              <div>网格大小</div>
+              <el-input-number v-model="gridSize" controls-position="right" :min="1" :max="50" size="small"></el-input-number>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="标尺" name="3">
+            <div class="flex-group">
+              <div>标尺</div>
+              <el-switch v-model="rule"> </el-switch>
+            </div>
+            <div class="flex-group">
+              <div>标尺颜色</div>
+              <label>{{ ruleColor }}</label>
+              <el-color-picker v-model="ruleColor" size="mini"></el-color-picker>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="小提示" name="4">
+            <ul style="fontSize:small">
+              <li>Ctrl/Command + Alt + Shift + 鼠标单击：自定义锚点</li>
+              <li>Ctrl/Command/Space + 鼠标拖拽空白：移动整个画布</li>
+              <li>Alt/Shift + 鼠标拖拽节点：独立拖拽（子）节点</li>
+              <li>Ctrl/Command + 鼠标点击：多选</li>
+              <li>← ↑ → ↓ ：移动5个像素</li>
+              <li>Ctrl + ← ↑ → ↓ ：移动1个像素</li>
+              <br /><br /><br />
+            </ul>
+          </el-collapse-item>
+        </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="通信" name="second">
-        <div class="file-setting">
-          <div>
-            <div class="file-group">
-              <div class="flex-group">
-                <div>mqTT</div>
-                <div class="full-text"><el-input size="mini" placeholder="mqTT"></el-input></div>
-              </div>
-              <div class="flex-group">
-                <div>key</div>
-                <div class="full-text"><el-input size="mini" placeholder="mqTT key"></el-input></div>
-              </div>
-              <div class="flex-group">
-                <el-button>连接</el-button>
-              </div>
+        <el-collapse v-model="activeNames" style="padding-left:10px;padding-right:10px;">
+          <el-collapse-item title="MQTT" name="5">
+            <div class="flex-group">
+              <div>mqTT</div>
+              <div class="full-text"><el-input size="mini" placeholder="mqTT"></el-input></div>
             </div>
-          </div>
-        </div>
+            <div class="flex-group">
+              <div>key</div>
+              <div class="full-text"><el-input size="mini" placeholder="mqTT key"></el-input></div>
+            </div>
+            <div class="flex-group">
+              <el-button>连接</el-button>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
       </el-tab-pane>
-      <el-tab-pane label="角色" name="third">角色管理</el-tab-pane>
+      <el-tab-pane label="结构" name="third">
+        <el-collapse v-model="activeNames" style="padding-left:10px;padding-right:10px;">
+          <el-collapse-item title="结构设置" name="5">
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -101,7 +99,8 @@ export default {
   name: 'filePanel',
   data() {
     return {
-      activeName: 'first'
+      activeName: 'first',
+      activeNames: ['1', '2', '3', '5']
     }
   },
   methods: {
@@ -242,40 +241,14 @@ export default {
 .file-panel {
   height: 100%;
   box-sizing: border-box;
-}
-.file-setting {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  .file-group {
-    width: 91%;
-    padding: 8px 12px;
-    border-bottom: 1px solid #e5e5e5;
-    .flex-group {
-      flex-wrap: wrap;
-      margin: 4px 0;
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      .full-text {
-        width: 60%;
-        .ant-input {
-          text-align: left;
-          font-size: 12px;
-          line-height: 24px;
-          height: 26px;
-          width: 100%;
-          // padding: 0 8px;
-          border-radius: 2px;
-          border: 1px solid transparent;
-          box-shadow: none;
-          transition: none;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      }
+  .flex-group {
+    flex-wrap: wrap;
+    margin: 4px 0;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    .el-input {
+      width: 130px;
     }
   }
 }

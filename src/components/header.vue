@@ -49,8 +49,8 @@
           </div>
           <div>保存</div>
         </a>
-        <a class="menu" @click="onMenu('Undo')"
-          ><div class="icon">
+        <a class="menu" @click="onMenu('Undo')">
+          <div class="icon">
             <i class="t-icon t-reply"></i>
           </div>
           <div>撤销</div>

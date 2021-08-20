@@ -211,6 +211,7 @@ export default {
 .node-panel {
   height: 100%;
   box-sizing: border-box;
+  overflow: auto;
   .flex-group {
     flex-wrap: wrap;
     margin: 4px 0;

@@ -1,13 +1,26 @@
 <template>
   <div class="tools">
-    <div v-for="(group, index) in tools" :key="index">
-      <div>{{ group.name }}</div>
-      <ul class="flex wrap">
-        <li class="hover" v-for="(item, i) in group.list" :key="i" :title="item.name" draggable="true" @dragstart="onDrag($event, item)" @click="onTouchstart(item)">
-          <i :class="`icon-size ${item.icon}`"></i>
-        </li>
-      </ul>
-    </div>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="图纸" name="first">
+        <div>图纸</div>
+      </el-tab-pane>
+      <el-tab-pane label="系统组件" name="second">
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item v-for="(group, index) in tools" :key="index" :title="group.name" :name="index" style="margin:0px 10px;">
+            <div class="thumbs">
+              <div class="thumb flex" v-for="(item, i) in group.list" :key="i">
+                <div class="center hover" :title="item.name" draggable="true" @dragstart="onDrag($event, item)" @click="onTouchstart(item)">
+                  <i :class="`icon-size ${item.icon}`"></i>
+                </div>
+              </div>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="我的" name="third">
+        <div>我创建的</div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -18,7 +31,9 @@ export default {
   name: 'Tools',
   data() {
     return {
-      tools: Tools
+      tools: Tools,
+      activeName: 'second',
+      activeNames: [0]
     }
   },
   methods: {
@@ -27,6 +42,9 @@ export default {
     },
     onTouchstart(node) {
       window.topology.touchedNode = node.data
+    },
+    handleChange(val) {
+      console.log(val)
     }
   }
 }
@@ -34,16 +52,44 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
-
-li {
-  list-style: none;
-  margin: 2px;
-  // font-weight: 600;
-  width: 40px;
-  height: 36px;
-  font-size: 35px;
-  .icon-size {
-    font-size: 25px;
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 8px;
+  .thumb {
+    width: 25%;
   }
+}
+.flex {
+  display: flex;
+}
+.center {
+  text-align: center;
+  margin: auto;
+}
+.icon-size {
+  font-size: 25px;
+}
+::v-deep .el-tabs__header {
+  padding: 0;
+  position: relative;
+  margin: 0 0 0px;
+}
+::v-deep .el-tabs__nav-scroll {
+  padding-left: 12px;
+}
+::v-deep .el-tabs__item {
+  padding: 0 10px;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 40px;
+  display: inline-block;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: #303133;
+  position: relative;
+  margin: 0 auto；;
 }
 </style>

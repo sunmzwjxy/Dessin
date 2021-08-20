@@ -44,7 +44,7 @@ export default {
         top: null,
         bottom: null
       },
-      componentName: 'filePanel'
+      componentName: ''
     }
   },
   components: {
@@ -60,6 +60,7 @@ export default {
   mounted() {
     this.canvasOptions.on = this.onMessage
     this.canvas = new Topology('topology', this.canvasOptions)
+    this.componentName = 'filePanel'
   },
   watch: {
     // monitor $store.state.menu.data
@@ -258,7 +259,8 @@ export default {
   }
 
   & > .tools {
-    width: 240px;
+    width: 200px;
+    overflow: scroll;
     border-right: 1px solid $color-border;
   }
 

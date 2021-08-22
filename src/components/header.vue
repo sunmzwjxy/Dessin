@@ -24,7 +24,7 @@
             <el-dropdown-item icon="el-icon-circle-check" command="SaveJSON"> 下载为JSON </el-dropdown-item>
             <el-dropdown-item icon="el-icon-circle-check" command="SavePNG"> 下载为PNG </el-dropdown-item>
             <el-dropdown-item icon="el-icon-circle-check" command="SaveSVG"> 下载为SVG </el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-check" divided command="exportHTML"> 导出为HTML </el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-check" divided command="exportPDF"> 导出为PDF </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown class="menu" @command="onMenu">

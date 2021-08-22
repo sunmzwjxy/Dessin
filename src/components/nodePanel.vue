@@ -97,11 +97,8 @@
               <el-input-number v-model="node.globalAlpha" controls-position="right" size="mini" :precision="2" :step="0.01" :min="0" :max="1" @change="onChange"></el-input-number>
             </div>
           </el-collapse-item>
-          <el-collapse-item title="字体设置" name="3">
-            <div>简化流程：设计简洁直观的操作流程；</div>
-            <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-            <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
-          </el-collapse-item>
+          <!-- 字体设置组件 -->
+          <textStyle></textStyle>
           <el-collapse-item title="图片" name="4">
             <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
             <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
@@ -120,6 +117,8 @@
 </template>
 
 <script>
+import textStyle from './child/textStyle.vue'
+
 export default {
   name: 'nodePanel',
   data() {
@@ -134,7 +133,7 @@ export default {
         gradientToColor: '#00FF26'
       },
       activeName: 'first',
-      activeNames: ['1'],
+      activeNames: ['1', '2'],
       dash: [
         {
           value: 0,
@@ -163,6 +162,9 @@ export default {
         { value: 2, label: '径向渐变' }
       ]
     }
+  },
+  components: {
+    textStyle: textStyle
   },
   watch: {
     '$store.state.node.data'(curData) {

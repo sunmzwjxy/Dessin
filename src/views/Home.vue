@@ -14,6 +14,7 @@
 
 <script>
 import { Topology, Node, Line } from '@topology/core'
+// import { jsPDF } from 'jspdf'
 
 import * as FileSaver from 'file-saver'
 import { canvasRegister } from '../services/canvas'
@@ -23,6 +24,7 @@ import filePanel from '@/components/filePanel'
 import nodePanel from '@/components/nodePanel'
 import linePanel from '@/components/linePanel'
 import uploadPic from '@/components/uploadPic'
+import nodesPanel from '@/components/nodesPanel'
 
 import C2S from '../services/canvas2svg'
 
@@ -52,7 +54,8 @@ export default {
     filePanel: filePanel,
     nodePanel: nodePanel,
     uploadPic: uploadPic,
-    linePanel: linePanel
+    linePanel: linePanel,
+    nodesPanel: nodesPanel
   },
   created() {
     canvasRegister()
@@ -97,6 +100,9 @@ export default {
           case 'line':
           case 'addLine':
             this.componentName = 'linePanel'
+            break
+          case 'multi':
+            this.componentName = 'nodesPanel'
             break
           case 'scale':
           case 'locked':
@@ -190,11 +196,17 @@ export default {
       evt.initEvent('click', true, true)
       a.dispatchEvent(evt)
     },
-    handle_exportHTML(data) {
-      this.$notify.error({
-        title: 'Error',
-        message: 'This functional is not implemented!'
-      })
+    handle_exportPDF(data) {
+      // const imgWidth = this.canvas.canvas.width + 200
+      // const imgHeight = this.canvas.canvas.height + 200
+      // console.log(this.canvas.canvas.canvas)
+      // var pageData = this.canvas.toDataURL('image/jpeg', 1.0)
+      // // eslint-disable-next-line new-cap
+      // const doc = new jsPDF()
+      // doc.text('Dessin', 10, 10)
+      // doc.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
+      // console.log('OK')
+      // doc.save('Dessin.pdf')
     },
     handle_Undo(data) {
       this.canvas.undo()

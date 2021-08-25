@@ -99,7 +99,7 @@
             <div>起点箭头</div>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item, index) in arrowTypes" :key="index" style="width:120px" :command="{key: 'fromArrow', value: item}">
+            <el-dropdown-item v-for="(item, index) in arrowTypes" :key="index" style="width:120px" :command="{ key: 'fromArrow', value: item }">
               <span><i :class="`icon-size t-icon t-from-${item}`"></i></span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -110,7 +110,7 @@
             <div>终点箭头</div>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item,index) in arrowTypes" :key="index" style="width:120px" :command="{key: 'toArrow', value: item}">
+            <el-dropdown-item v-for="(item, index) in arrowTypes" :key="index" style="width:120px" :command="{ key: 'toArrow', value: item }">
               <span><i :class="`icon-size t-icon t-from-${item}`"></i></span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -132,24 +132,30 @@
         <el-dropdown class="menu">
           <span class="el-dropdown-link">
             <div class="icon">
-            <i class="t-icon t-edit"></i>
-            <i class="abs t-icon t-triangle-down"></i>
+              <i class="t-icon t-edit"></i>
+              <i class="abs t-icon t-triangle-down"></i>
             </div>
             帮助
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item> <a href=""></a> 许可与申明 </el-dropdown-item>
-            <el-dropdown-item> <a href=""></a> 服务与合作 </el-dropdown-item>
-            <el-dropdown-item divided> <a href=""></a> 关于我们 </el-dropdown-item>
+            <el-dropdown-item> <router-link to="">许可与申明</router-link> </el-dropdown-item>
+            <el-dropdown-item> <router-link to="">服务与合作</router-link> </el-dropdown-item>
+            <el-dropdown-item divided> <router-link to="about">关于我们</router-link> </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <a class="menu ml16">
-          <div>登录</div>
-        </a>
+        <el-dropdown class="menu" @command="onMenu">
+          <span class="el-dropdown-link">
+            <el-avatar size="large">Jimmy</el-avatar>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="Logout"> 退出 </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <!-- <router-link class="menu ml16" to="login"><div>登录</div></router-link>
         <a class="menu gray"><div>|</div></a>
         <a class="menu warning">
           <div>注册</div>
-        </a>
+        </a> -->
       </div>
     </div>
   </div>

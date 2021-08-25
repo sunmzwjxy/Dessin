@@ -6,30 +6,30 @@
           <el-collapse-item title="位置和大小" name="1">
             <div class="flex-group">
               <div>X</div>
-              <el-input-number controls-position="right" size="mini" :min="-100" :max="800" v-model="node.rect.x" @change="onChange"></el-input-number>
+              <el-input-number controls-position="right" size="mini" :min="-100" :max="2000" v-model="rectx" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>Y</div>
-              <el-input-number controls-position="right" size="mini" :min="-100" :max="800" v-model="node.rect.y" @change="onChange"></el-input-number>
+              <el-input-number controls-position="right" size="mini" :min="-100" :max="2000" v-model="recty" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>宽</div>
-              <el-input-number controls-position="right" size="mini" :min="1" :max="800" v-model="node.rect.width" @change="onChange"></el-input-number>
+              <el-input-number controls-position="right" size="mini" :min="1" :max="800" v-model="rectwidth" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>高</div>
-              <el-input-number controls-position="right" size="mini" :min="1" :max="800" v-model="node.rect.height" @change="onChange"></el-input-number>
+              <el-input-number controls-position="right" size="mini" :min="1" :max="800" v-model="rectheight" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>旋转</div>
-              <el-input-number controls-position="right" size="mini" :min="-360" :max="360" v-model="node.rotate" @change="onChange"></el-input-number>
+              <el-input-number controls-position="right" size="mini" :min="-360" :max="360" v-model="rotate" @change="onChange"></el-input-number>
             </div>
           </el-collapse-item>
           <el-collapse-item title="样式" name="2">
             <div class="flex-group">
               <div>线条样式</div>
-              <el-select v-model="node.dash" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
-                <el-option v-for="item in dash" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+              <el-select v-model="dash" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
+                <el-option v-for="item in dashType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
               </el-select>
             </div>
             <!-- <div class="flex-group">
@@ -40,73 +40,65 @@
             </div> -->
             <div class="flex-group">
               <div>线条渐变</div>
-              <el-select v-model="node.strokeType" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
-                <el-option v-for="item in strokeType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+              <el-select v-model="strokeType" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
+                <el-option v-for="item in strokeTypeArr" :key="item.value" :label="item.label" :value="item.value"> </el-option>
               </el-select>
             </div>
-            <div class="flex-group" v-if="node.strokeType">
+            <div class="flex-group" v-if="strokeType">
               <div>开始颜色</div>
-              <label>{{ node.lineGradientFromColor }}</label>
-              <el-color-picker v-model="node.lineGradientFromColor" size="mini" @change="onChange"></el-color-picker>
+              <label>{{ lineGradientFromColor }}</label>
+              <el-color-picker v-model="lineGradientFromColor" size="mini" @change="onChange"></el-color-picker>
             </div>
-            <div class="flex-group" v-if="node.strokeType">
+            <div class="flex-group" v-if="strokeType">
               <div>结束颜色</div>
-              <label>{{ node.lineGradientToColor }}</label>
-              <el-color-picker v-model="node.lineGradientToColor" size="mini" @change="onChange"></el-color-picker>
+              <label>{{ lineGradientToColor }}</label>
+              <el-color-picker v-model="lineGradientToColor" size="mini" @change="onChange"></el-color-picker>
             </div>
-            <div class="flex-group" v-if="!node.strokeType">
+            <div class="flex-group" v-if="!strokeType">
               <div>线条颜色</div>
-              <el-color-picker v-model="node.strokeStyle" size="mini" @change="onChange"></el-color-picker>
+              <el-color-picker v-model="strokeStyle" size="mini" @change="onChange"></el-color-picker>
             </div>
             <div class="flex-group">
               <div>线条宽度</div>
-              <el-input-number v-model="node.lineWidth" controls-position="right" size="mini" :min="1" :max="800" @change="onChange"></el-input-number>
+              <el-input-number v-model="lineWidth" controls-position="right" size="mini" :min="1" :max="800" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>背景</div>
-              <el-select v-model="node.bkType" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
-                <el-option v-for="item in bkType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+              <el-select v-model="bkType" placeholder="请选择" size="mini" style="width:130px" @change="onChange">
+                <el-option v-for="item in bkTypeArr" :key="item.value" :label="item.label" :value="item.value"> </el-option>
               </el-select>
             </div>
-            <div class="flex-group" v-if="node.bkType === 0">
+            <div class="flex-group" v-if="bkType === 0">
               <div>背景颜色</div>
-              <el-color-picker v-model="node.fillStyle" size="mini" @change="onChange"></el-color-picker>
+              <el-color-picker v-model="fillStyle" size="mini" @change="onChange"></el-color-picker>
             </div>
-            <div class="flex-group" v-if="node.bkType !== 0">
+            <div class="flex-group" v-if="bkType !== 0">
               <div>开始颜色</div>
-              <label>{{ node.gradientFromColor }}</label>
-              <el-color-picker v-model="node.gradientFromColor" size="mini" @change="onChange"></el-color-picker>
+              <label>{{ gradientFromColor }}</label>
+              <el-color-picker v-model="gradientFromColor" size="mini" @change="onChange"></el-color-picker>
             </div>
-            <div class="flex-group" v-if="node.bkType !== 0">
+            <div class="flex-group" v-if="bkType !== 0">
               <div>结束颜色</div>
-              <label>{{ node.gradientToColor }}</label>
-              <el-color-picker v-model="node.gradientToColor" size="mini" @change="onChange"></el-color-picker>
+              <label>{{ gradientToColor }}</label>
+              <el-color-picker v-model="gradientToColor" size="mini" @change="onChange"></el-color-picker>
             </div>
-            <div class="flex-group" v-if="node.bkType === 1">
+            <div class="flex-group" v-if="bkType === 1">
               <div>渐变角度</div>
-              <el-input-number v-model="node.gradientAngle" controls-position="right" size="mini" :min="-360" :max="360" @change="onChange"></el-input-number>
+              <el-input-number v-model="gradientAngle" controls-position="right" size="mini" :min="-360" :max="360" @change="onChange"></el-input-number>
             </div>
-            <div class="flex-group" v-if="node.bkType === 2">
+            <div class="flex-group" v-if="bkType === 2">
               <div>渐变关径</div>
               <!-- step 0.01 -->
-              <el-input-number v-model="node.gradientRadius" controls-position="right" size="mini" :precision="2" :step="0.01" :min="0" :max="1" @change="onChange"></el-input-number>
+              <el-input-number v-model="gradientRadius" controls-position="right" size="mini" :precision="2" :step="0.01" :min="0" :max="1" @change="onChange"></el-input-number>
             </div>
             <div class="flex-group">
               <div>透明度</div>
               <!-- step 0.01 -->
-              <el-input-number v-model="node.globalAlpha" controls-position="right" size="mini" :precision="2" :step="0.01" :min="0" :max="1" @change="onChange"></el-input-number>
+              <el-input-number v-model="globalAlpha" controls-position="right" size="mini" :precision="2" :step="0.01" :min="0" :max="1" @change="onChange"></el-input-number>
             </div>
           </el-collapse-item>
           <!-- 字体设置组件 -->
           <textStyle></textStyle>
-          <el-collapse-item title="图片" name="4">
-            <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-            <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-          </el-collapse-item>
-          <el-collapse-item title="字体图标" name="５">
-            <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-            <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-          </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="配置" name="second">配置管理</el-tab-pane>
@@ -123,40 +115,19 @@ export default {
   name: 'nodePanel',
   data() {
     return {
-      pen: null,
-      node: {
-        strokeType: 0,
-        lineGradientFromColor: '#888888',
-        lineGradientToColor: '#00FF26',
-        bkType: 0,
-        gradientFromColor: '#888888',
-        gradientToColor: '#00FF26'
-      },
       activeName: 'first',
       activeNames: ['1', '2'],
-      dash: [
-        {
-          value: 0,
-          label: '实线'
-        },
-        {
-          value: 1,
-          label: '虚线1'
-        },
-        {
-          value: 2,
-          label: '虚线2'
-        },
-        {
-          value: 3,
-          label: '虚线3'
-        }
+      dashType: [
+        { value: 0, label: '实线' },
+        { value: 1, label: '虚线1' },
+        { value: 2, label: '虚线2' },
+        { value: 3, label: '虚线3' }
       ],
-      strokeType: [
+      strokeTypeArr: [
         { value: 0, label: '无' },
         { value: 1, label: '线性渐变' }
       ],
-      bkType: [
+      bkTypeArr: [
         { value: 0, label: '纯色背景' },
         { value: 1, label: '线性渐变' },
         { value: 2, label: '径向渐变' }
@@ -166,44 +137,160 @@ export default {
   components: {
     textStyle: textStyle
   },
-  watch: {
-    '$store.state.node.data'(curData) {
-      if (curData.strokeType === undefined || curData.strokeType === null) {
-        curData.strokeType = 0
+  computed: {
+    rectx: {
+      get() {
+        return this.$store.state.node.data.rect.x
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'x', value: curValue })
       }
-      if (curData.bkType === undefined || curData.bkType === null) {
-        curData.strokeType = 0
+    },
+    recty: {
+      get() {
+        return this.$store.state.node.data.rect.y
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'y', value: curValue })
       }
-      this.pen = curData
-      for (const key in curData) {
-        if (curData[key] !== null) {
-          this.node[key] = curData[key]
-        }
+    },
+    rectwidth: {
+      get() {
+        return this.$store.state.node.data.rect.width
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'width', value: curValue })
       }
-      this.$forceUpdate()
+    },
+    rectheight: {
+      get() {
+        return this.$store.state.node.data.rect.height
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'height', value: curValue })
+      }
+    },
+    rotate: {
+      get() {
+        return this.$store.state.node.data.rotate
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'rotate', value: curValue })
+      }
+    },
+    dash: {
+      get() {
+        return this.$store.state.node.data.dash
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'dash', value: curValue })
+      }
+    },
+    strokeType: {
+      get() {
+        return this.$store.state.node.data.strokeType
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'strokeType', value: curValue })
+      }
+    },
+    lineGradientFromColor: {
+      get() {
+        return this.$store.state.node.data.lineGradientFromColor
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'lineGradientFromColor', value: curValue })
+      }
+    },
+    lineGradientToColor: {
+      get() {
+        return this.$store.state.node.data.lineGradientToColor
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'lineGradientToColor', value: curValue })
+      }
+    },
+    strokeStyle: {
+      get() {
+        return this.$store.state.node.data.strokeStyle
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'strokeStyle', value: curValue })
+      }
+    },
+    lineWidth: {
+      get() {
+        return this.$store.state.node.data.lineWidth
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'lineWidth', value: curValue })
+      }
+    },
+    bkType: {
+      get() {
+        return this.$store.state.node.data.bkType
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'bkType', value: curValue })
+      }
+    },
+    fillStyle: {
+      get() {
+        return this.$store.state.node.data.fillStyle
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'fillStyle', value: curValue })
+      }
+    },
+    gradientFromColor: {
+      get() {
+        return this.$store.state.node.data.gradientFromColor
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'gradientFromColor', value: curValue })
+      }
+    },
+    gradientToColor: {
+      get() {
+        return this.$store.state.node.data.gradientToColor
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'gradientToColor', value: curValue })
+      }
+    },
+    gradientAngle: {
+      get() {
+        return this.$store.state.node.data.gradientAngle
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'gradientAngle', value: curValue })
+      }
+    },
+    gradientRadius: {
+      get() {
+        return this.$store.state.node.data.gradientRadius
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'gradientRadius', value: curValue })
+      }
+    },
+    globalAlpha: {
+      get() {
+        return this.$store.state.node.data.globalAlpha
+      },
+      set(curValue) {
+        this.$store.commit('node/updateNode', { key: 'globalAlpha', value: curValue })
+      }
     }
   },
   methods: {
     handleClick(tab, event) {},
     handleChange(val) {},
-    onChange() {
-      for (const key in this.node) {
-        if (this.node[key] !== null) {
-          this.pen[key] = this.node[key]
-        }
-      }
+    onChange(key, value) {
       // force update UI because el-select does not show correct value after change
-      this.$forceUpdate()
+      // this.$forceUpdate()
       // this.$set(this.node, 'dash', 1)
       window.topology.updateProps()
-    }
-  },
-  created() {
-    this.pen = window.topology.activeLayer.pens[0]
-    for (const key in this.pen) {
-      if (this.pen[key] !== null) {
-        this.node[key] = this.pen[key]
-      }
     }
   }
 }

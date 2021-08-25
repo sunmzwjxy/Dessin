@@ -14,9 +14,8 @@
               <!-- <label class="hover"><i title="等距分布、两端对齐" class="t-icon t-horizontal-between"></i></label> -->
             </div>
           </el-collapse-item>
-          <el-collapse-item title="样式" name="2">
-            <!-- 节点样式 -->
-          </el-collapse-item>
+          <!-- 节点样式 -->
+          <lineStyle></lineStyle>
           <!-- 字体设置组件 -->
           <textStyle></textStyle>
         </el-collapse>
@@ -33,6 +32,7 @@
 import { alignNodes } from '@topology/layout'
 import struct from './child/struct'
 import textStyle from './child/textStyle.vue'
+import lineStyle from './child/style.vue'
 
 export default {
   name: 'nodesPanel',
@@ -72,10 +72,10 @@ export default {
   },
   components: {
     struct: struct,
-    textStyle: textStyle
+    textStyle: textStyle,
+    lineStyle: lineStyle
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     handleClick(tab, event) {},
     handleChange(val) {},
@@ -91,16 +91,11 @@ export default {
       window.topology.updateProps()
     },
     onAlign(align) {
-      alignNodes(
-        window.topology.activeLayer.pens,
-        window.topology.activeLayer.rect,
-        align
-      )
+      alignNodes(window.topology.activeLayer.pens, window.topology.activeLayer.rect, align)
       window.topology.render()
     }
   },
-  created() {
-  }
+  created() {}
 }
 </script>
 
@@ -136,13 +131,13 @@ export default {
   }
 }
 .align {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-around;
 }
 .mt4 {
-    margin-top: 4px!important;
+  margin-top: 4px !important;
 }
 ::v-deep .el-tabs__header {
   padding: 0;

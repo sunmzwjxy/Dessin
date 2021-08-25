@@ -1,25 +1,21 @@
 <template>
   <div id="app">
-    <div class="page-header">
-      <work-header />
-    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import workheader from './components/header.vue'
-
 export default {
   name: 'app',
-  components: {
-    'work-header': workheader
-  }
+  components: {}
 }
 </script>
 
-<style scoped>
-/* #app {
-  min-width: 1366px;
-} */
-</style>>
+<style lang="scss" scoped>
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+</style>

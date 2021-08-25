@@ -1,13 +1,18 @@
 <template>
-  <div class="page-body flex">
-    <div class="tools">
-      <worktools />
+  <div>
+    <div class="page-header">
+      <workheader />
     </div>
-    <div class="body">
-      <div id="topology"></div>
-    </div>
-    <div class="props">
-      <component :is="componentName"></component>
+    <div class="page-body flex">
+      <div class="tools">
+        <worktools />
+      </div>
+      <div class="body">
+        <div id="topology"></div>
+      </div>
+      <div class="props">
+        <component :is="componentName"></component>
+      </div>
     </div>
   </div>
 </template>
@@ -23,8 +28,8 @@ import worktools from '@/components/tools'
 import filePanel from '@/components/filePanel'
 import nodePanel from '@/components/nodePanel'
 import linePanel from '@/components/linePanel'
-import uploadPic from '@/components/uploadPic'
 import nodesPanel from '@/components/nodesPanel'
+import workheader from '@/components/header.vue'
 
 import C2S from '../services/canvas2svg'
 
@@ -53,9 +58,9 @@ export default {
     worktools: worktools,
     filePanel: filePanel,
     nodePanel: nodePanel,
-    uploadPic: uploadPic,
     linePanel: linePanel,
-    nodesPanel: nodesPanel
+    nodesPanel: nodesPanel,
+    workheader: workheader
   },
   created() {
     canvasRegister()
@@ -87,15 +92,8 @@ export default {
         switch (event) {
           case 'node':
           case 'addNode':
-            this.props = {
-              node: data,
-              line: null,
-              nodes: null,
-              multi: false,
-              locked: data.locked
-            }
-            this.$store.commit('node/setNode', data)
             this.componentName = 'nodePanel'
+            this.$store.commit('node/setNode', data)
             break
           case 'line':
           case 'addLine':
@@ -250,6 +248,11 @@ export default {
       this.canvas.data[data.key] = data.value
       this.$store.commit('canvas/canvasfile', data)
       this.canvas.willRender()
+    },
+    handle_Logout(data) {
+      this.$store.dispatch('logout')
+      // 跳转到登录页面
+      this.$router.push('/login')
     }
   },
   destroyed() {

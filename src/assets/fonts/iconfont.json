@@ -1,0 +1,58 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "383339",
+      "name": "people",
+      "font_class": "people",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "908582",
+      "name": "商品标签",
+      "font_class": "shangpinbiaoqian",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "924722",
+      "name": "用户名",
+      "font_class": "yonghuming",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "5206117",
+      "name": "订单",
+      "font_class": "icon",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "5712920",
+      "name": "统计",
+      "font_class": "tongji",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "7736183",
+      "name": "lock",
+      "font_class": "lock",
+      "unicode": "e8fc",
+      "unicode_decimal": 59644
+    },
+    {
+      "icon_id": "14843441",
+      "name": "权限",
+      "font_class": "quanxian",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    }
+  ]
+}

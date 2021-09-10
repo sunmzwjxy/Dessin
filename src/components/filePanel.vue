@@ -67,7 +67,7 @@
       </el-tab-pane>
       <el-tab-pane label="通信" name="second">
         <el-collapse v-model="activeNames" style="padding-left:10px;padding-right:10px;">
-          <el-collapse-item title="MQTT" name="5">
+          <el-collapse-item title="MQTT" name="4">
             <div class="flex-group">
               <div>mqTT</div>
               <div class="full-text"><el-input size="mini" placeholder="mqTT"></el-input></div>
@@ -77,16 +77,13 @@
               <div class="full-text"><el-input size="mini" placeholder="mqTT key"></el-input></div>
             </div>
             <div class="flex-group">
-              <el-button>连接</el-button>
+              <el-button size="mini">连接</el-button>
             </div>
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
       <el-tab-pane label="结构" name="third">
-        <el-collapse v-model="activeNames" style="padding-left:10px;padding-right:10px;">
-          <el-collapse-item title="结构设置" name="5">
-          </el-collapse-item>
-        </el-collapse>
+        <struct />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -94,14 +91,18 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import struct from './child/struct'
 
 export default {
   name: 'filePanel',
   data() {
     return {
       activeName: 'first',
-      activeNames: ['1', '2', '3', '5']
+      activeNames: ['1', '2', '3', '4']
     }
+  },
+  components: {
+    struct: struct
   },
   methods: {
     ...mapMutations('menu', ['emit'])
@@ -238,9 +239,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+a {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
 .file-panel {
   height: 100%;
   box-sizing: border-box;
+  overflow: auto;
   .flex-group {
     flex-wrap: wrap;
     margin: 4px 0;
@@ -252,10 +260,9 @@ export default {
     }
   }
 }
-
-.input:hover {
-  border: 1px solid #f00;
-}
+// .input:hover {
+//   border: 1px solid #f00;
+// }
 
 // ::v-deep .el-tabs__header {
 //   margin-left: auto;

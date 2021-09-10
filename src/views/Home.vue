@@ -1,19 +1,25 @@
 <template>
-  <div class="page-body flex">
-    <div class="tools">
-      <worktools />
+  <div>
+    <div class="page-header">
+      <workheader />
     </div>
-    <div class="body">
-      <div id="topology"></div>
-    </div>
-    <div class="props">
-      <component :is="componentName"></component>
+    <div class="page-body flex">
+      <div class="tools">
+        <worktools />
+      </div>
+      <div class="body">
+        <div id="topology"></div>
+      </div>
+      <div class="props">
+        <component :is="componentName"></component>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Topology, Node, Line } from '@topology/core'
+import { jsPDF } from 'jspdf'
 
 import * as FileSaver from 'file-saver'
 import { canvasRegister } from '../services/canvas'
@@ -22,9 +28,11 @@ import worktools from '@/components/tools'
 import filePanel from '@/components/filePanel'
 import nodePanel from '@/components/nodePanel'
 import linePanel from '@/components/linePanel'
-import uploadPic from '@/components/uploadPic'
+import nodesPanel from '@/components/nodesPanel'
+import workheader from '@/components/header.vue'
 
 import C2S from '../services/canvas2svg'
+var FormData = require('form-data')
 
 export default {
   name: 'Home',
@@ -44,22 +52,26 @@ export default {
         top: null,
         bottom: null
       },
-      componentName: 'filePanel'
+      componentName: ''
     }
   },
   components: {
     worktools: worktools,
     filePanel: filePanel,
     nodePanel: nodePanel,
-    uploadPic: uploadPic,
-    linePanel: linePanel
+    linePanel: linePanel,
+    nodesPanel: nodesPanel,
+    workheader: workheader
   },
   created() {
     canvasRegister()
+    // Get data from DB
+    // todo
   },
   mounted() {
     this.canvasOptions.on = this.onMessage
     this.canvas = new Topology('topology', this.canvasOptions)
+    this.componentName = 'filePanel'
   },
   watch: {
     // monitor $store.state.menu.data
@@ -83,19 +95,15 @@ export default {
         switch (event) {
           case 'node':
           case 'addNode':
-            this.props = {
-              node: data,
-              line: null,
-              nodes: null,
-              multi: false,
-              locked: data.locked
-            }
-            this.$store.commit('node/setNode', data)
             this.componentName = 'nodePanel'
+            this.$store.commit('node/setNode', data)
             break
           case 'line':
           case 'addLine':
             this.componentName = 'linePanel'
+            break
+          case 'multi':
+            this.componentName = 'nodesPanel'
             break
           case 'scale':
           case 'locked':
@@ -146,9 +154,23 @@ export default {
     },
     // save json to database
     handle_Save(data) {
-      this.$notify.error({
-        title: 'Error',
-        message: 'This functional is not implemented!'
+      this.canvas.toImage(0, blob => {
+        // image
+        var form = new FormData() // Currently empty
+        form.append('imagefile', blob)
+        form.append('pens', JSON.stringify(this.canvas.pureData().pens))
+        form.append('component', 0)
+        form.append('componentData', null)
+        this.$store
+          .dispatch('canvas/savePureData', form)
+          .then(result => {})
+          .catch(() => {
+            this.$message({
+              showClose: true,
+              message: 'Save failed',
+              type: 'error'
+            })
+          })
       })
     },
     // save json to native
@@ -189,11 +211,15 @@ export default {
       evt.initEvent('click', true, true)
       a.dispatchEvent(evt)
     },
-    handle_exportHTML(data) {
-      this.$notify.error({
-        title: 'Error',
-        message: 'This functional is not implemented!'
-      })
+    handle_exportPDF(data) {
+      const imgWidth = this.canvas.canvas.width + 800
+      const imgHeight = this.canvas.canvas.height + 800
+      // 要重新计算宽和高，判断pdf是横还是竖？
+      var pageData = this.canvas.toImage()
+      // eslint-disable-next-line new-cap
+      const doc = new jsPDF('', 'pt', [imgWidth, imgHeight])
+      doc.addImage(pageData, 'JPEG', 0, 0)
+      doc.save('Dessin.pdf')
     },
     handle_Undo(data) {
       this.canvas.undo()
@@ -237,6 +263,11 @@ export default {
       this.canvas.data[data.key] = data.value
       this.$store.commit('canvas/canvasfile', data)
       this.canvas.willRender()
+    },
+    handle_Logout(data) {
+      this.$store.dispatch('logout')
+      // 跳转到登录页面
+      this.$router.push('/login')
     }
   },
   destroyed() {
@@ -258,7 +289,8 @@ export default {
   }
 
   & > .tools {
-    width: 240px;
+    width: 200px;
+    overflow: scroll;
     border-right: 1px solid $color-border;
   }
 

@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const canvas = {
   namespaced: true,
   state: {
@@ -78,7 +80,45 @@ const canvas = {
       }
     }
   },
-  actions: {},
+  actions: {
+    savePureData(context, data) {
+      // process data , data is formData
+      // ......
+      data.append('userId', context.rootState.userinfo.id)
+      data.append('class', context.state.filePops.classify)
+      data.append('folderId', 0) // update in feature
+      // data.append('lineName', context.state.data.lineName)
+      // data.append('fromArrow', context.state.data.fromArrow)
+      // data.append('toArrow', context.state.data.toArrow)
+      // data.append('scale', context.state.data.scale)
+      // data.append('locked', context.state.data.locked)
+
+      // save data to DB
+      return new Promise((resolve, reject) => {
+        Vue.prototype.$axios
+          .post('/data/save', data)
+          .then(res => {
+            resolve(res)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    initWorkSpace(context, data) {
+      // get workspace data from DB
+      return new Promise((resolve, reject) => {
+        Vue.prototype.$axios
+          .post('', data)
+          .then(res => {
+            resolve(res)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    }
+  },
   getters: {},
   modules: {}
 }

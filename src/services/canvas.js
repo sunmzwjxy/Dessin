@@ -263,7 +263,7 @@ export const Tools = [
             height: 100
           },
           name: 'image',
-          image: 'img/liucheng.png'
+          image: 'http://localhost:3000/images/liucheng.png' // 'img/liucheng.png'
         }
       },
       {

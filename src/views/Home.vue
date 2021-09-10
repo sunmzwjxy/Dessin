@@ -19,7 +19,7 @@
 
 <script>
 import { Topology, Node, Line } from '@topology/core'
-// import { jsPDF } from 'jspdf'
+import { jsPDF } from 'jspdf'
 
 import * as FileSaver from 'file-saver'
 import { canvasRegister } from '../services/canvas'
@@ -32,6 +32,7 @@ import nodesPanel from '@/components/nodesPanel'
 import workheader from '@/components/header.vue'
 
 import C2S from '../services/canvas2svg'
+var FormData = require('form-data')
 
 export default {
   name: 'Home',
@@ -64,6 +65,8 @@ export default {
   },
   created() {
     canvasRegister()
+    // Get data from DB
+    // todo
   },
   mounted() {
     this.canvasOptions.on = this.onMessage
@@ -151,9 +154,23 @@ export default {
     },
     // save json to database
     handle_Save(data) {
-      this.$notify.error({
-        title: 'Error',
-        message: 'This functional is not implemented!'
+      this.canvas.toImage(0, blob => {
+        // image
+        var form = new FormData() // Currently empty
+        form.append('imagefile', blob)
+        form.append('pens', JSON.stringify(this.canvas.pureData().pens))
+        form.append('component', 0)
+        form.append('componentData', null)
+        this.$store
+          .dispatch('canvas/savePureData', form)
+          .then(result => {})
+          .catch(() => {
+            this.$message({
+              showClose: true,
+              message: 'Save failed',
+              type: 'error'
+            })
+          })
       })
     },
     // save json to native
@@ -195,16 +212,14 @@ export default {
       a.dispatchEvent(evt)
     },
     handle_exportPDF(data) {
-      // const imgWidth = this.canvas.canvas.width + 200
-      // const imgHeight = this.canvas.canvas.height + 200
-      // console.log(this.canvas.canvas.canvas)
-      // var pageData = this.canvas.toDataURL('image/jpeg', 1.0)
-      // // eslint-disable-next-line new-cap
-      // const doc = new jsPDF()
-      // doc.text('Dessin', 10, 10)
-      // doc.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
-      // console.log('OK')
-      // doc.save('Dessin.pdf')
+      const imgWidth = this.canvas.canvas.width + 800
+      const imgHeight = this.canvas.canvas.height + 800
+      // 要重新计算宽和高，判断pdf是横还是竖？
+      var pageData = this.canvas.toImage()
+      // eslint-disable-next-line new-cap
+      const doc = new jsPDF('', 'pt', [imgWidth, imgHeight])
+      doc.addImage(pageData, 'JPEG', 0, 0)
+      doc.save('Dessin.pdf')
     },
     handle_Undo(data) {
       this.canvas.undo()

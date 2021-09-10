@@ -10,8 +10,9 @@ import './plugins/element.js'
 // 配置请求的根路径
 axios.defaults.baseURL = 'http://localhost:3000/'
 // axios.defaults.headers.common.Authorization = AUTH_TOKEN
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-// axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 
 // Add a request interceptor
 // 发送请求之前添加预处理(token)

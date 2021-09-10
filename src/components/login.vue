@@ -65,30 +65,32 @@ export default {
   },
   methods: {
     validateForm() {
-      this.$refs.ruleForm.validate(async valid => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
           const data = {
             username: this.loginform.username,
             // md5
             password: md5(this.loginform.password).toString()
           }
-          const { data: res } = await this.$store.dispatch('login', data)
-          // const { data: res } = await this.$axios.post('users/login', data)
-          if (res.meta.status === 200) {
-            this.$message({
-              showClose: true,
-              message: 'login success',
-              type: 'success'
+          this.$store
+            .dispatch('login', data)
+            .then(result => {
+              // route jump
+              this.$router.push('/')
+
+              this.$message({
+                showClose: true,
+                message: 'login success',
+                type: 'success'
+              })
             })
-            // route jump
-            this.$router.push('/')
-          } else {
-            this.$message({
-              showClose: true,
-              message: 'login failed',
-              type: 'error'
+            .catch(() => {
+              this.$message({
+                showClose: true,
+                message: 'login failed',
+                type: 'error'
+              })
             })
-          }
         } else {
           console.log('validate failed')
           return false

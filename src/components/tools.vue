@@ -2,7 +2,7 @@
   <div class="tools">
     <el-tabs v-model="activeName">
       <el-tab-pane label="图纸" name="first">
-        <div>图纸</div>
+        <folderTree :mtype="false"></folderTree>
       </el-tab-pane>
       <el-tab-pane label="系统组件" name="second">
         <el-collapse v-model="activeNames" @change="handleChange">
@@ -17,8 +17,8 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
-      <el-tab-pane label="我的" name="third">
-        <div>我创建的</div>
+      <el-tab-pane label="组件" name="third">
+        <folderTree :mtype="true"></folderTree>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -26,6 +26,7 @@
 
 <script>
 import { Tools } from '../services/canvas'
+import folderTree from './child/folderTree.vue'
 
 export default {
   name: 'Tools',
@@ -35,6 +36,9 @@ export default {
       activeName: 'second',
       activeNames: [0]
     }
+  },
+  components: {
+    folderTree: folderTree
   },
   methods: {
     onDrag(event, node) {
